@@ -146,9 +146,6 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
 			case R.id.share_button:
 				stopRecording(true);
 				Uri uri = Uri.parse("file://"+mOutputFile.getAbsolutePath());
-				Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-				scanIntent.setData(uri);
-				sendBroadcast(scanIntent);
 				setResult(Activity.RESULT_OK, new Intent().setData(uri));
 				finish();
 				break;
