@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +55,7 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
 		this.mCancelButton.setOnClickListener(this);
 		this.mStopButton = (Button) this.findViewById(R.id.share_button);
 		this.mStopButton.setOnClickListener(this);
+		this.setFinishOnTouchOutside(false);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
@@ -61,7 +63,11 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
 	protected void onStart() {
 		super.onStart();
 		Log.d("Voice Recorder", "output: " + getOutputFile());
-		startRecording();
+		if (!startRecording()) {
+			mStopButton.setEnabled(false);
+			mStopButton.setTextColor(0x8a000000);
+			Toast.makeText(this,R.string.unable_to_start_recording,Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	@Override
@@ -72,7 +78,7 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
 		}
 	}
 
-	private void startRecording() {
+	private boolean startRecording() {
 		mRecorder = new MediaRecorder();
 		mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 		mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
@@ -94,12 +100,14 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
 			mStartTime = SystemClock.elapsedRealtime();
 			mHandler.postDelayed(mTickExecutor, 100);
 			Log.d("Voice Recorder","started recording to "+mOutputFile.getAbsolutePath());
-		} catch (IOException e) {
+			return true;
+		} catch (Exception e) {
 			Log.e("Voice Recorder", "prepare() failed "+e.getMessage());
+			return false;
 		}
 	}
 
-	protected  void stopRecording(boolean saveFile) {
+	protected void stopRecording(boolean saveFile) {
 		mRecorder.stop();
 		mRecorder.release();
 		mRecorder = null;
