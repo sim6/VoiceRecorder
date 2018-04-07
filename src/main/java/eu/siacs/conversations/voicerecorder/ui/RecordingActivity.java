@@ -80,6 +80,7 @@ public class RecordingActivity extends Activity implements View.OnClickListener 
 
 	private boolean startRecording() {
 		mRecorder = new MediaRecorder();
+		mRecorder.setAudioChannels(2);
 		mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 		mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
