@@ -1,0 +1,7 @@
+<resources>
+    <string name="voice_recorder_plugin">Connector d'enregistrament de veu</string>
+    <string name="voice_recorder">Enregistradora de veu</string>
+    <string name="cancel">Cancel·lar</string>
+    <string name="share">Compartir</string>
+    <string name="unable_to_start_recording">No es pot iniciar l'enregistrament</string>
+</resources>
